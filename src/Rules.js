@@ -14,6 +14,8 @@
 class Rule {
 	constructor(params) {
 		// put all properties in params on instance
+		// Object.assign(target, source)
+		// method copies all enumerable own properties from one or more source objects to a target object.
 		Object.assign(this, params);
 	}
 
@@ -24,9 +26,18 @@ class Rule {
 
 	freq(dice) {
 		// frequencies of dice values
+		// The Map object holds key-value pairs and remembers the original insertion order of the keys.
 		const freqs = new Map();
+
+		// reqs.get(d) - alone is undefined
 		for (let d of dice) freqs.set(d, (freqs.get(d) || 0) + 1);
 		return Array.from(freqs.values());
+
+		// const dice = [2, 3, 3, 5, 1];
+		// const freqs = new Map();
+		// for (let d of dice) freqs.set(d, (freqs.get(d) || 0) + 1);
+		// console.log(Array.from(freqs.keys()))	Array [2, 3, 5, 1]
+		// console.log(Array.from(freqs.values()))	Array [1, 2, 1, 1]
 	}
 
 	count(dice, val) {
@@ -54,6 +65,8 @@ class TotalOneNumber extends Rule {
 class SumDistro extends Rule {
 	evalRoll = (dice) => {
 		// do any of the counts meet of exceed this distro?
+		// const dice = [2, 3, 3, 3, 1];
+		// freq(dice) will be [1,3,1], e.g. some will compare with 3 and give true
 		return this.freq(dice).some((c) => c >= this.count) ? this.sum(dice) : 0;
 	};
 }
@@ -74,9 +87,20 @@ class SmallStraight {
 
 class LargeStraight extends Rule {
 	evalRoll = (dice) => {
+		//The Set constructor lets you create Set objects that store unique values of any type
 		const d = new Set(dice);
+		// dice = [1, 2, 3, 4, 5]
+		/* [[Entries]]
+		0:1
+		1:2
+		2:3
+		3:4
+		4:5
+		size:5 */
 
 		// large straight must be 5 different dice & only one can be a 1 or a 6
+		// d.size is 5 and (!true = false) or (!false = true)
+		// true and true => score, e.g 40
 		return d.size === 5 && (!d.has(1) || !d.has(6)) ? this.score : 0;
 	};
 }
@@ -86,6 +110,8 @@ class LargeStraight extends Rule {
 class Yahtzee extends Rule {
 	evalRoll = (dice) => {
 		// all dice must be the same
+		// dice = [5,5,5,5,5]
+		// freq(dice) will be [5]
 		return this.freq(dice)[0] === 5 ? this.score : 0;
 	};
 }
