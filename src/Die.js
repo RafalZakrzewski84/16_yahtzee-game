@@ -15,6 +15,7 @@ class Die extends Component {
 		return (
 			<i
 				className={classes}
+				disabled={rolling}
 				// changed to arrow function for binding this -fixing dice locking
 				onClick={() => handleClick(idx)}
 			/>
